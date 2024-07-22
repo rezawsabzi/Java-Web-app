@@ -1091,19 +1091,25 @@ function GradeCoursePresStudents(corsePresId) {
   stduentsOfCourse.innerHTML = tbl;
 }
 
-function saveGrades(corsePresId) {
+async function saveGrades(corsePresId) {
   const inputs = document.querySelectorAll(".gradeInput");
   console.log(inputs);
   for (let i = 0; i < inputs.length; i++) {
     for (let j = 0; j < courseSelArr.length; j++) {
-      console.log(inputs[i].getAttribute("data-id"));
-
       if (
         inputs[i].getAttribute("data-id") == courseSelArr[j].student.stCode &&
         corsePresId == courseSelArr[j].coursePres.coursePresId
       ) {
         if (inputs[i].value >= 0 && inputs[i].value <= 20) {
-          courseSelArr[j].setGrade(inputs[i].value);
+          const course = courseSelArr[j];
+          const result = await AJAX(
+            `/IE-Uni/course/grade?grade=${inputs[i].value}&courseSelId=${course.courseSelId}`
+          );
+          if (result.status === "success") {
+            courseSelArr[j].setGrade(inputs[i].value);
+          } else {
+            console.log(result.message);
+          }
         }
       }
     }

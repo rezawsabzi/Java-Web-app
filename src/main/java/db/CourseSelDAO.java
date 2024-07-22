@@ -49,6 +49,25 @@ public class CourseSelDAO {
         return status;
     }
 
+    public static int updateGrade(int id, double grade){
+        int status = 0;
+        try{
+            Connection connection = DatabaseUtils.getConnection();
+            String query = "UPDATE `coursesel` SET  `grade` = ? " +
+                    "WHERE `coursesel`.`courseSelId` = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDouble(1,grade);
+            preparedStatement.setInt(2,id);
+
+            status = preparedStatement.executeUpdate();
+
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return status;
+    }
+
     public static int delete(int id ){
         int status = 0 ;
         try {
