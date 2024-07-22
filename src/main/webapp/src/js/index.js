@@ -280,7 +280,7 @@ function createStudentTable() {
   studentList.innerHTML = tbl;
 }
 
-function saveStudent() {
+async function saveStudent() {
   let stCode = inputStCode.value;
   let firstName = inputStFirstName.value;
   let lastName = inputStLastName.value;
@@ -290,15 +290,31 @@ function saveStudent() {
   if (validateStudentInputs(stCode, firstName, lastName, oldStuCode)) {
     if (isNaN(oldStuCode)) {
       let stu = new Student(stCode, firstName, lastName, gender);
-      stArr.push(stu);
+      const result = await AJAXMet(
+        `/IE-Uni/student?action=save&stCode=${stu.stCode}&firstName=${stu.firstName}&lastName=${stu.lastName}&gender=${stu.gender}`,
+        "PUT"
+      );
+      if (result.status === "success") {
+        stArr.push(stu);
+      } else {
+        console.log(result.message);
+      }
     } else {
       oldStuCode = parseInt(oldStuCode);
       const idx = getIndexStudent(oldStuCode);
       if (idx > -1) {
-        stArr[idx].stCode = stCode;
-        stArr[idx].firstName = firstName;
-        stArr[idx].lastName = lastName;
-        stArr[idx].gender = gender;
+        const result = await AJAXMet(
+          `/IE-Uni/student?action=update&stCode=${stCode}&firstName=${firstName}&lastName=${lastName}&gender=${gender}&oldId=${oldStuCode}`,
+          "PUT"
+        );
+        if (result.status === "success") {
+          stArr[idx].stCode = stCode;
+          stArr[idx].firstName = firstName;
+          stArr[idx].lastName = lastName;
+          stArr[idx].gender = gender;
+        } else {
+          console.log(result.message);
+        }
       }
     }
   }
@@ -369,11 +385,16 @@ function prepareEditStudent(stuCode) {
   }
 }
 
-function deleteStudent(stuCode) {
-  const stuIdx = getIndexStudent(stuCode);
-  if (stuIdx > -1) {
-    stArr.splice(stuIdx, 1);
-    createStudentList();
+async function deleteStudent(stuCode) {
+  const result = await AJAXMet(`/IE-Uni/student?id=${stuCode}`, "delete");
+  if (result.status === "success") {
+    const stuIdx = getIndexStudent(stuCode);
+    if (stuIdx > -1) {
+      stArr.splice(stuIdx, 1);
+      createStudentList();
+    }
+  } else {
+    console.log(result.message);
   }
 }
 

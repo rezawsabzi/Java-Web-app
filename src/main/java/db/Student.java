@@ -10,7 +10,14 @@ public class Student {
     public Student(){
         
     }
-    
+
+    public Student(int stCode, String firstName, String lastName, byte gender) {
+        this.stCode = stCode;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+    }
+
     public Student(int stCode, String firstName, String lastName, byte gender, CoursePresentation[] selectedCourses) {
         this.stCode = stCode;
         this.firstName = firstName;
