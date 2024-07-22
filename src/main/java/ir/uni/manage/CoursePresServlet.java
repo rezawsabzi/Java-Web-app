@@ -69,4 +69,131 @@ public class CoursePresServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = resp.getWriter();
+
+
+        try {
+            String courseId = req.getParameter("courseId");
+            String coursePresId = req.getParameter("coursePresId");
+            String insCode = req.getParameter("insCode");
+            String action = req.getParameter("action");
+
+            if (courseId == null || coursePresId == null || insCode == null | action == null ||
+                    courseId.isBlank() || coursePresId.isBlank() || insCode.isBlank()) {
+                JsonObject errorResponse = Json.createObjectBuilder()
+                        .add("status", "fail")
+                        .add("message", "Missing or empty parameters")
+                        .build();
+                out.print(errorResponse);
+                return;
+            }
+            Course c = new Course();
+            c.setCourseId(Integer.parseInt(courseId));
+            Instructor i = new Instructor();
+            i.setInsCode(Integer.parseInt(insCode));
+            CoursePresentation cp = new CoursePresentation(Integer.parseInt(coursePresId),c , i);
+            if(action.equals("save")){
+                int state = CoursePresDAO.save(cp);
+                if (state > 0) {
+                    JsonObject successResponse = Json.createObjectBuilder()
+                            .add("status", "success")
+                            .add("message", "CoursePres added successfully")
+                            .add("data", Json.createObjectBuilder()
+                                    .add("coursePresId", cp.getCoursePresId())
+                                    .add("courseId", cp.getCourse().getCourseId())
+                                    .add("insCode", cp.getInstructor().getInsCode())
+                            ).build();
+                    out.print(successResponse);
+                } else {
+                    JsonObject errorResponse = Json.createObjectBuilder()
+                            .add("status", "fail")
+                            .add("message", "Failed to add coursePres")
+                            .build();
+                    out.print(errorResponse);
+                }
+            }else if(action.equals("update")){
+                String oldId = req.getParameter("oldId");
+                int state = CoursePresDAO.update(cp, Integer.parseInt(oldId));
+                if (state > 0) {
+                    JsonObject successResponse = Json.createObjectBuilder()
+                            .add("status", "success")
+                            .add("message", "Course Pres updated successfully")
+                            .add("data", Json.createObjectBuilder()
+                                    .add("coursePresId", cp.getCoursePresId())
+                                    .add("courseId", cp.getCourse().getCourseId())
+                                    .add("insCode", cp.getInstructor().getInsCode())
+                            ).build();
+                    out.print(successResponse);
+                } else {
+                    JsonObject errorResponse = Json.createObjectBuilder()
+                            .add("status", "fail")
+                            .add("message", "Failed to update coursePres")
+                            .build();
+                    out.print(errorResponse);
+                }
+            }else{
+                JsonObject errorResponse = Json.createObjectBuilder()
+                        .add("status", "fail")
+                        .add("message", "Invalid action")
+                        .build();
+                out.print(errorResponse);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("status", "fail")
+                    .add("message", "An error occurred while adding or updating the course")
+                    .add("details", e.getMessage())
+                    .build();
+            out.print(errorResponse);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = resp.getWriter();
+        try{
+            String InsId = req.getParameter("id");
+            int id = Integer.parseInt(InsId);
+
+            CoursePresentation c = CoursePresDAO.getCoursePresById(id);
+            if (c != null) {
+                int state = CoursePresDAO.delete(c.getCoursePresId());
+                if (state > 0) {
+                    JsonObject errorResponse = Json.createObjectBuilder()
+                            .add("status", "success")
+                            .add("message", "Record deleted successfully!")
+                            .build();
+                    out.print(errorResponse);
+
+                } else {
+                    JsonObject errorResponse = Json.createObjectBuilder()
+                            .add("status", "fail")
+                            .add("message", "Sorry! unable to delete record")
+                            .build();
+                    out.print(errorResponse);
+                }
+            } else {
+                JsonObject errorResponse = Json.createObjectBuilder()
+                        .add("status", "fail")
+                        .add("message", "Record not found")
+                        .build();
+                out.print(errorResponse);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            JsonObject errorResponse = Json.createObjectBuilder()
+                    .add("status", "fail")
+                    .add("message", "An error occurred while deleting the course")
+                    .add("details", e.getMessage())
+                    .build();
+            out.print(errorResponse);
+        }
+    }
 }

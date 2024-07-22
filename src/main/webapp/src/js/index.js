@@ -1066,7 +1066,7 @@ function generateAllInstructors() {
   allInstructors.innerHTML = tbl;
 }
 
-function saveCoursePres() {
+async function saveCoursePres() {
   let coursePresId = inputCoursePresId.value;
   let oldCoursePresCode = inputCoursePresOldCode.value;
   const courseEl = document.getElementsByName("coursechecked");
@@ -1094,16 +1094,32 @@ function saveCoursePres() {
         courseArr[getIndexCourse(courseId)],
         insArr[getIndexInstructor(instructorId)]
       );
-      coursePresArr.push(c);
+      const result = await AJAXMet(
+        `/IE-Uni/coursepres?action=save&courseId=${c.course.courseId}&coursePresId=${c.coursePresId}&insCode=${c.instructor.insCode}`,
+        "PUT"
+      );
+      if (result.status === "success") {
+        coursePresArr.push(c);
+      } else {
+        console.log(result.message);
+      }
     } else {
       /// continue for edit
       oldCoursePresCode = parseInt(oldCoursePresCode);
       const idx = getIndexCoursePres(oldCoursePresCode);
       if (idx > -1) {
-        coursePresArr[idx].coursePresId = coursePresId;
-        coursePresArr[idx].course = courseArr[getIndexCourse(courseId)];
-        coursePresArr[idx].instructor =
-          insArr[getIndexInstructor(instructorId)];
+        const result = await AJAXMet(
+          `/IE-Uni/coursepres?action=update&courseId=${courseId}&coursePresId=${coursePresId}&insCode=${instructorId}&oldId=${oldCoursePresCode}`,
+          "PUT"
+        );
+        if (result.status === "success") {
+          coursePresArr[idx].coursePresId = coursePresId;
+          coursePresArr[idx].course = courseArr[getIndexCourse(courseId)];
+          coursePresArr[idx].instructor =
+            insArr[getIndexInstructor(instructorId)];
+        } else {
+          console.log(result.message);
+        }
       }
     }
   }
@@ -1164,11 +1180,19 @@ function getIndexCoursePres(coursePresId) {
   return idx;
 }
 
-function deleteCoursePres(coursePresId) {
-  const coIdx = getIndexCoursePres(coursePresId);
-  if (coIdx > -1) {
-    coursePresArr.splice(coIdx, 1);
-    createCoursePresList();
+async function deleteCoursePres(coursePresId) {
+  const result = await AJAXMet(
+    `/IE-Uni/coursepres?id=${coursePresId}`,
+    "delete"
+  );
+  if (result.status === "success") {
+    const coIdx = getIndexCoursePres(coursePresId);
+    if (coIdx > -1) {
+      coursePresArr.splice(coIdx, 1);
+      createCoursePresList();
+    }
+  } else {
+    console.log(result.message);
   }
 }
 

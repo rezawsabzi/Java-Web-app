@@ -14,6 +14,9 @@ public class CoursePresDAO {
     public static int save(CoursePresentation c) throws SQLException {
         int status = 0;
         try {
+            System.out.println(c.getCoursePresId());
+            System.out.println(c.getCourse().getCourseId());
+            System.out.println(c.getInstructor().getInsCode());
             Connection connection = DatabaseUtils.getConnection();
             String query = "insert into coursepres(`coursePresId`, `courseId`, `insCode`) values (?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
