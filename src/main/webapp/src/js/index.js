@@ -641,7 +641,7 @@ function createCourseTable() {
   courseList.innerHTML = tbl;
 }
 
-function saveCourse() {
+async function saveCourse() {
   let courseId = inputCourseId.value;
   let title = inputCourseTitle.value;
   let unitNumber = inputCourseUnits.value;
@@ -650,14 +650,32 @@ function saveCourse() {
   if (validateCourse(courseId, title, unitNumber, oldCourseCode)) {
     if (isNaN(oldCourseCode)) {
       let c = new Course(courseId, title, unitNumber);
-      courseArr.push(c);
+      const result = await AJAXMet(
+        `/IE-Uni/course?action=save&courseId=${c.courseId}&title=${c.title}&unitNumbers=${c.unitNumber}`,
+        "PUT"
+      );
+      if (result.status === "success") {
+        courseArr.push(c);
+      } else {
+        console.log(result.message);
+      }
     } else {
       oldCourseCode = parseInt(oldCourseCode);
       const idx = getIndexCourse(oldCourseCode);
+
       if (idx > -1) {
-        courseArr[idx].courseId = courseId;
-        courseArr[idx].title = title;
-        courseArr[idx].unitNumber = unitNumber;
+        const result = await AJAXMet(
+          `/IE-Uni/course?action=update&courseId=${courseId}&title=${title}&unitNumbers=${unitNumber}&oldId=${oldCourseCode}`,
+          "PUT"
+        );
+        console.log(result);
+        if (result.status === "success") {
+          courseArr[idx].courseId = courseId;
+          courseArr[idx].title = title;
+          courseArr[idx].unitNumber = unitNumber;
+        } else {
+          console.log(result.message);
+        }
       }
     }
   }
@@ -732,11 +750,16 @@ function prepareEditCourse(courseId) {
   }
 }
 
-function deleteCourse(courseId) {
-  const coIdx = getIndexCourse(courseId);
-  if (coIdx > -1) {
-    courseArr.splice(coIdx, 1);
-    createCourseList();
+async function deleteCourse(courseId) {
+  const result = await AJAXMet(`/IE-Uni/course?id=${courseId}`, "delete");
+  if (result.status === "success") {
+    const coIdx = getIndexCourse(courseId);
+    if (coIdx > -1) {
+      courseArr.splice(coIdx, 1);
+      createCourseList();
+    }
+  } else {
+    console.log(result.message);
   }
 }
 
