@@ -203,36 +203,6 @@
       </div>
     </section>
     <script defer>
-      function loadCoursePresListHTML() {
-        $.ajax({
-          url: "JSON/coursePres.json",
-          method: "GET",
-          dataType: "json",
-          success: (res) => {
-            res.map((e) => {
-              const course = new Course(
-                e.course.courseId,
-                e.course.title,
-                e.course.unitNumber
-              );
-              const instructor = new Instrauctor(
-                e.instructor.insCode,
-                e.instructor.firstName,
-                e.instructor.lastName,
-                e.instructor.gender
-              );
-              const coursePresentation = new CoursePresentation(
-                e.coursePresId,
-                course,
-                instructor
-              );
-              coursePresArr.push(coursePresentation);
-            });
-            createCoursePresList();
-          },
-        });
-      }
-
       function loadStudentsListHTML() {
         $.ajax({
           url: "JSON/student.json",

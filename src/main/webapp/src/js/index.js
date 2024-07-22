@@ -14,6 +14,7 @@ const courseSelArr = [];
 $(document).ready(function () {
   loadInstructorListHTML();
   loadCoursesListHTML();
+  loadCoursePresListHTML();
 });
 
 // HELPER FUNCTIONS
@@ -74,6 +75,32 @@ async function loadCoursesListHTML() {
   const result = await AJAX("/IE-Uni/course");
   result.courses.map((e) => courseArr.push(Object.assign(new Course(), e)));
   createCourseList();
+}
+
+async function loadCoursePresListHTML() {
+  const result = await AJAX("/IE-Uni/coursepres");
+  if (result.status === "success") {
+    result.coursesPreses.map((e) => {
+      const course = new Course(
+        e.course.courseId,
+        e.course.title,
+        e.course.unitNumber
+      );
+      const instructor = new Instrauctor(
+        e.instructor.insCode,
+        e.instructor.firstName,
+        e.instructor.lastName,
+        e.instructor.gender
+      );
+      const coursePresentation = new CoursePresentation(
+        e.coursePresId,
+        course,
+        instructor
+      );
+      coursePresArr.push(coursePresentation);
+    });
+    createCoursePresList();
+  }
 }
 // CLASS //
 class Student {
