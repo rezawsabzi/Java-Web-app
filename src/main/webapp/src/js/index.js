@@ -15,6 +15,7 @@ $(document).ready(function () {
   loadInstructorListHTML();
   loadCoursesListHTML();
   loadCoursePresListHTML();
+  loadStudentsListHTML();
 });
 
 // HELPER FUNCTIONS
@@ -101,6 +102,51 @@ async function loadCoursePresListHTML() {
     });
     createCoursePresList();
   }
+}
+
+async function loadStudentsListHTML() {
+  const result = await AJAX("/IE-Uni/getstudents");
+  result.students.map((e) => {
+    let course, instructor, cp;
+    // Map the selectedCourses array to instances of CoursePresentation
+    const sC = e.selectedCourses.map((coursePres) => {
+      const course = new Course(
+        coursePres.course.courseId,
+        coursePres.course.title,
+        coursePres.course.unitNumber
+      );
+      const instructor = new Instrauctor(
+        coursePres.instructor.insCode,
+        coursePres.instructor.firstName,
+        coursePres.instructor.lastName,
+        coursePres.instructor.gender
+      );
+      const cp = new CoursePresentation(
+        coursePres.coursePresId,
+        course,
+        instructor
+      );
+      return cp;
+    });
+
+    // Create a new Student instance with the parsed data
+    const student = new Student(
+      e.stCode,
+      e.firstName,
+      e.lastName,
+      e.gender,
+      sC
+    );
+    student.selectedCourses.map((cp) => {
+      const courseSelected = new CourseSelected(student, cp);
+      courseSelArr.push(courseSelected);
+    });
+
+    // Push the Student instance into the stArr array
+    stArr.push(student);
+
+    createStudentList();
+  });
 }
 // CLASS //
 class Student {

@@ -1,8 +1,7 @@
 
 package ir.uni.manage;
 
-import db.Student;
-import db.StudentDAO;
+import db.*;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
@@ -15,32 +14,56 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  * @author Reza Sabzi
  */
-@WebServlet(name = "GetAllStudents", urlPatterns = {"/GetAllStudents"})
+@WebServlet(name = "GetAllStudents", urlPatterns = {"/getstudents"})
 public class GetAllStudents extends HttpServlet {
 
   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-         response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
         response.setContentType("application/json;charset=UTF-8");
         
         JsonArrayBuilder jsonArrayB = Json.createArrayBuilder();
+
+
         List<Student> stList = StudentDAO.getAllStudents();
         for (Student st : stList) {
+            ArrayList<CourseSel> cslist = CourseSelDAO.getCourseSelForStCode(st.getStCode());
+            JsonArrayBuilder jSelCourseArr = Json.createArrayBuilder();
+            for(CourseSel cs: cslist){
+                CoursePresentation cp = CoursePresDAO.getCoursePresById(cs.getCoursePresId());
+                Instructor i = InstructorDAO.getInstructorById(cp.getInstructor().getInsCode());
+                Course c = CourseDAO.getCourseById(cp.getCourse().getCourseId());
+                JsonObject stObj = Json.createObjectBuilder()
+                        .add("coursePresId", cp.getCoursePresId())
+                        .add("course", Json.createObjectBuilder()
+                                .add("courseId", c.getCourseId())
+                                .add("title", c.getTitle())
+                                .add("unitNumbers", c.getUnitNumbers()).build())
+                        .add("instructor", Json.createObjectBuilder()
+                                .add("insCode", i.getInsCode())
+                                .add("firstName", i.getFirstName())
+                                .add("lastName", i.getLastName())
+                                .add("gender", i.getGender()).build())
+                        .build();
+
+                jSelCourseArr.add(stObj);
+            }
             JsonObject stObj = Json.createObjectBuilder()
                     .add("stCode", st.getStCode())
                     .add("firstName", st.getFirstName())
                     .add("lastName", st.getLastName())
-                    .add("gender", st.getGender()).build();
+                    .add("gender", st.getGender())
+                    .add("selectedCourses", jSelCourseArr)
+                    .build();
 
             jsonArrayB.add(stObj);
         }
