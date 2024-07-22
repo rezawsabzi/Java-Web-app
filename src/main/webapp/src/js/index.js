@@ -1399,7 +1399,7 @@ function showOfferedCoursesList() {
   }
 }
 
-function saveSelectedCourses() {
+async function saveSelectedCourses() {
   const allSelectedCourses = document.querySelectorAll(".coursesToSelect");
   const stCode = document.querySelector(".currentStudent").value;
   const st = stArr[getIndexStudent(stCode)];
@@ -1424,10 +1424,18 @@ function saveSelectedCourses() {
         st,
         coursePresArr[getIndexCoursePres(coursePresCode)]
       );
-      courseSelArr.push(courseSelected);
-      st.selectedCourses.push(
-        coursePresArr[getIndexCoursePres(coursePresCode)]
+      const result = await AJAXMet(
+        `/IE-Uni/course/select?stCode=${st.stCode}&cCode=${coursePresCode}&action=save`,
+        "PUT"
       );
+      if (result.status === "success") {
+        courseSelArr.push(courseSelected);
+        st.selectedCourses.push(
+          coursePresArr[getIndexCoursePres(coursePresCode)]
+        );
+      } else {
+        console.log(result.message);
+      }
     }
   }
   coursesCanSelectList.innerHTML = "";
@@ -1440,22 +1448,28 @@ function CancelSelectedCourses() {
   btnNewCourseSel.disabled = false;
 }
 
-function deleteCourseSelected(coursePresId, stCode) {
+async function deleteCourseSelected(coursePresId, stCode) {
   console.log(coursePresId);
   const stIdx = getIndexStudent(stCode);
   if (stIdx > -1) {
-    stArr[stIdx].selectedCourses.splice(
-      getIndexCourseSel(coursePresId, stIdx),
-      1
+    const result = await AJAXMet(
+      `/IE-Uni/course/select?stCode=${stCode}&cCode=${coursePresId}`,
+      "delete"
     );
-    showSelectedCourses(stCode);
-  }
-  for (let i = 0; i < courseSelArr.length; i++) {
-    if (
-      courseSelArr[i].coursePres.coursePresId == coursePresId &&
-      courseSelArr[i].student.stCode == stCode
-    ) {
-      courseSelArr.splice(i, 1);
+    if (result.status === "success") {
+      stArr[stIdx].selectedCourses.splice(
+        getIndexCourseSel(coursePresId, stIdx),
+        1
+      );
+      showSelectedCourses(stCode);
+      for (let i = 0; i < courseSelArr.length; i++) {
+        if (
+          courseSelArr[i].coursePres.coursePresId == coursePresId &&
+          courseSelArr[i].student.stCode == stCode
+        ) {
+          courseSelArr.splice(i, 1);
+        }
+      }
     }
   }
 }

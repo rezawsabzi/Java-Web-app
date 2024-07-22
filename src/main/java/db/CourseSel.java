@@ -10,6 +10,11 @@ public class CourseSel {
     public CourseSel() {
     }
 
+    public CourseSel(int stCode, int coursePresId) {
+        this.stCode = stCode;
+        this.coursePresId = coursePresId;
+    }
+
     public CourseSel(int courseSelId, int stCode, int coursePresId) {
         this.courseSelId = courseSelId;
         this.stCode = stCode;
