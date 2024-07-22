@@ -1,0 +1,52 @@
+[
+  {
+    "courseId": 2001,
+    "title": "Analaysis and Design",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2002,
+    "title": "Artificial Inteligence",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2003,
+    "title": "Logical Circuts",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2004,
+    "title": "Dijital Systems",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2005,
+    "title": "Basics of Programming",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2006,
+    "title": "Advanced Programming",
+    "unitNumber": 4
+  },
+  {
+    "courseId": 2007,
+    "title": "Databases",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2008,
+    "title": "Network",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2009,
+    "title": "Operating Systems",
+    "unitNumber": 3
+  },
+  {
+    "courseId": 2010,
+    "title": "Hardware",
+    "unitNumber": 3
+  }
+]

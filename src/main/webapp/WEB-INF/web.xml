@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <servlet>
+        <servlet-name>LoadDatabaseInfo</servlet-name>
+        <servlet-class>db.loadservlet.LoadDatabaseInfo</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoadDatabaseInfo</servlet-name>
+        <url-pattern>/LoadDatabaseInfo</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <context-param>
+        <param-name>db_user</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    <context-param>
+        <param-name>db_pass</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>db_class</param-name>
+        <param-value>com.mysql.cj.jdbc.Driver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>db_con_str</param-name>
+        <param-value>jdbc:mysql://127.0.0.1:3306/contactdb?characterEncoding=utf-8&amp;useUnicode=true</param-value>
+    </context-param>
+
+</web-app>

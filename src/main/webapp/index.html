@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Page</title>
+    <link rel="stylesheet" href="./src/css/style.css" />
+    <script src="./src/js/jquery-3.7.1.min.js"></script>
+    <script defer src="./src/js/index.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav">
+        <div>
+          <h1>my university</h1>
+        </div>
+        <ul class="nav__links">
+          <li class="nav__item">
+            <a class="nav__link" href="#section--1">Students</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#section--2">Instructors</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#section--3">Courses</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link" href="#section--4">Courses Offered</a>
+          </li>
+          <li class="nav__item">
+            <a class="nav__link nav__link--btn btn--show-modal" href="#"
+              >Add Student</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="section" id="section--1">
+      <div class="section__title">
+        <h2 class="section__description">Students</h2>
+        <h3 class="section__header">
+          Create, delete, see and all about students.
+        </h3>
+      </div>
+      <div class="section__part">
+        <div class="list student__list" id="studentList">
+          <p class="no--students">No Students defined yet!</p>
+        </div>
+        <div class="section__part--btn">
+          <button class="btn btnNewStu" id="btnNewStu">Add New Student</button>
+        </div>
+        <div class="modal modal_student hidden">
+          <button class="btn--close-modal btnCancel">&times;</button>
+          <h2 class="modal__header">create student</h2>
+          <form class="modal__form">
+            <label>Student Code:</label>
+            <input type="text" id="stuCode" required />
+            <label>First Name</label>
+            <input type="text" id="stuFirstName" required />
+            <label> Last Name</label>
+            <input type="text" id="stuLastName" required />
+            <input type="hidden" id="oldStCode" />
+            <label>Gender</label>
+            <select id="stuGender">
+              <option value="0" selected>Male</option>
+              <option value="1">Female</option>
+            </select>
+            <button class="btn btnSave">Save Student</button>
+          </form>
+        </div>
+        <div class="overlay hidden"></div>
+      </div>
+      <div class="coursesSelected modal hidden">
+        <button class="btn--close-modal btnCancelSelCourses">&times;</button>
+        <h2 class="modal__header">All courses selected</h2>
+        <div class="list" id="selectedCoursesList">
+          <p class="no--list">No Courses selected yet!</p>
+        </div>
+        <div class="coursesCanSelectList"></div>
+        <button class="btn btnNewCourseSel" id="btnNewCourseSel">
+          Select New Course
+        </button>
+      </div>
+      <div class="overlay hidden"></div>
+    </section>
+
+    <section class="section" id="section--2">
+      <div class="section__title">
+        <h2 class="section__description">Instrauctors</h2>
+        <h3 class="section__header">
+          Create, delete, see and all about instructors.
+        </h3>
+      </div>
+      <div class="section__part">
+        <div class="list instructor-list" id="instructor-list"></div>
+        <div class="section__container">
+          <div class="section__part--btn">
+            <button class="btn btnNewInstructor" id="btnNewInstructor">
+              Add New Instructor
+            </button>
+          </div>
+
+          <div class="section-form" id="instructor-form">
+            <h2 class="modal__header">create instructor</h2>
+            <form class="modal__form">
+              <label for="insCode">Instruvtor Code</label>
+              <input type="text" id="insCode" required />
+              <label for="insFirstName">First Name</label>
+              <input type="text" id="insFirstName" required />
+              <label for="insLastName">Last Name</label>
+              <input type="text" id="insLastName" required />
+              <input type="hidden" id="insOldCode" />
+              <label for="insGender">Gender</label>
+              <select id="indGender">
+                <option value="0" selected>Male</option>
+                <option value="1">Female</option>
+              </select>
+              <button class="btn btnSaveIns">Save Instrauctor</button>
+              <button class="btn btnCancelIns">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--3" id="section--3">
+      <div class="section__title">
+        <h2 class="section__description">Courses</h2>
+        <h3 class="section__header">
+          Create, delete, see and all about courses.
+        </h3>
+      </div>
+      <div class="section__part">
+        <div class="list" id="course-list"></div>
+        <div class="section__container">
+          <div class="section__part--btn">
+            <button class="btn btnNewCourse" id="btnNewCourse">
+              Add New Course
+            </button>
+          </div>
+          <div class="section-form" id="course-form">
+            <h2 class="modal__header">Add courses</h2>
+            <form class="course__form modal__form">
+              <label for="courseId">Course Code</label>
+              <input type="text" id="courseId" required />
+              <label for="course-title">Title</label>
+              <input type="text" id="course-title" required />
+              <label for="unit-number">Unit Number</label>
+              <input type="number" id="unit-number" required /><br />
+              <input type="hidden" id="courseOldCode" />
+
+              <button class="btn btnSaveCourse">Save Course</button>
+              <button class="btn btnCancelCourse">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section section--4" id="section--4">
+      <div class="section__title">
+        <h2 class="section__description">Courses Offered</h2>
+        <h3 class="section__header">
+          You can present a course from courses list.
+        </h3>
+      </div>
+      <div class="section__part">
+        <div class="course_pres-list" id="course_pres-list"></div>
+
+        <div class="section__part--btn">
+          <button class="btn btnNewCoursePres" id="btnNewCoursePres">
+            Offere new course
+          </button>
+        </div>
+        <div class="coursePres-form" id="coursePres-form">
+          <h2 class="modal__header">Add Courses Offered</h2>
+          <form class="coursePres__form">
+            <label for="coursePresId">Presentation Code</label>
+            <input
+              class="input_corsePres"
+              type="text"
+              id="coursePresId"
+              required
+            />
+            <input type="hidden" id="coursePresOldCode" />
+          </form>
+          <div class="all_lists">
+            <div class="all all_courses"></div>
+            <div class="all all_instructors"></div>
+          </div>
+          <div class="all_btns_container">
+            <div class="all_btns">
+              <button class="btn btnSaveCoursePres">Save Course</button>
+              <button class="btn btnCancelCoursePres">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div class="noCourse"></div>
+        <div class="modal modal_Allstudent hidden">
+          <button class="btn--close-modal btnCancelAllStudents">&times;</button>
+          <h2 class="modal__header">All students</h2>
+          <div class="stduentsOfCourse"></div>
+        </div>
+      </div>
+    </section>
+    <script defer>
+      function loadCoursePresListHTML() {
+        $.ajax({
+          url: "JSON/coursePres.json",
+          method: "GET",
+          dataType: "json",
+          success: (res) => {
+            res.map((e) => {
+              const course = new Course(
+                e.course.courseId,
+                e.course.title,
+                e.course.unitNumber
+              );
+              const instructor = new Instrauctor(
+                e.instructor.insCode,
+                e.instructor.firstName,
+                e.instructor.lastName,
+                e.instructor.gender
+              );
+              const coursePresentation = new CoursePresentation(
+                e.coursePresId,
+                course,
+                instructor
+              );
+              coursePresArr.push(coursePresentation);
+            });
+            createCoursePresList();
+          },
+        });
+      }
+
+      function loadStudentsListHTML() {
+        $.ajax({
+          url: "JSON/student.json",
+          method: "GET",
+          dataType: "json",
+          success: (res) => {
+            res.map((e) => {
+              let course, instructor, cp;
+              // Map the selectedCourses array to instances of CoursePresentation
+              const sC = e.selectedCourses.map((coursePres) => {
+                const course = new Course(
+                  coursePres.course.courseId,
+                  coursePres.course.title,
+                  coursePres.course.unitNumber
+                );
+                const instructor = new Instrauctor(
+                  coursePres.instructor.insCode,
+                  coursePres.instructor.firstName,
+                  coursePres.instructor.lastName,
+                  coursePres.instructor.gender
+                );
+                const cp = new CoursePresentation(
+                  coursePres.coursePresId,
+                  course,
+                  instructor
+                );
+                return cp;
+              });
+
+              // Create a new Student instance with the parsed data
+              const student = new Student(
+                e.stCode,
+                e.firstName,
+                e.lastName,
+                e.gender,
+                sC
+              );
+              student.selectedCourses.map((cp) => {
+                const courseSelected = new CourseSelected(student, cp);
+                courseSelArr.push(courseSelected);
+              });
+
+              // Push the Student instance into the stArr array
+              stArr.push(student);
+
+              createStudentList();
+            });
+            // Call the function to process the list further
+            createStudentList();
+          },
+        });
+      }
+
+      function loadCourseSelectedData() {
+        const csAjax = new XMLHttpRequest();
+        csAjax.open("GET", "JSON/selectedCourses.json");
+        csAjax.onreadystatechange = () => {
+          if (csAjax.readyState == 4 && csAjax.status == 200) {
+            const res = JSON.parse(csAjax.responseText);
+            res.map((e) => {
+              // Create instances of Course and Instructor
+              const course = new Course(
+                e.coursePres.course.courseId,
+                e.coursePres.course.title,
+                e.coursePres.course.unitNumber
+              );
+              const instructor = new Instrauctor(
+                e.coursePres.instructor.insCode,
+                e.coursePres.instructor.firstName,
+                e.coursePres.instructor.lastName,
+                e.coursePres.instructor.gender
+              );
+
+              // Create an instance of CoursePresentation
+              const coursePresentation = new CoursePresentation(
+                e.coursePres.coursePresId,
+                course,
+                instructor
+              );
+            });
+            // Call the function to process the list further
+          }
+        };
+
+        csAjax.send();
+      }
+
+      // loadInstructorListHTML();
+      // loadCoursesListHTML();
+      // loadCoursePresListHTML();
+      // loadStudentsListHTML();
+      // loadCourseSelectedData();
+    </script>
+  </body>
+</html>

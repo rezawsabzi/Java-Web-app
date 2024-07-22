@@ -1,0 +1,375 @@
+/* GENERAL */
+:root {
+  --color-primary: #5ec576;
+  --color-secondary: #ffcb03;
+  --color-tertiary: #ff585f;
+  --color-primary-darker: #4bbb7d;
+  --color-secondary-darker: #ffbb00;
+  --color-tertiary-darker: #fd424b;
+  --color-primary-opacity: #5ec5763a;
+  --color-secondary-opacity: #ffcd0331;
+  --color-tertiary-opacity: #ff58602d;
+  --gradient-primary: linear-gradient(to top left, #39b385, #9be15d);
+  --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  color: #444;
+  line-height: 1.9;
+  background-color: #f3f3f3;
+}
+.section {
+  padding: 10rem 3rem;
+  border-top: 1px solid #ddd;
+  transition: transform 1s, opacity 1s;
+}
+
+.section--hidden {
+  opacity: 0;
+  transform: translateY(8rem);
+}
+
+.section__title {
+  max-width: 80rem;
+  margin: 0 auto 8rem auto;
+}
+.section__part {
+  max-width: 100rem;
+  margin: 0 auto;
+}
+
+.section__description {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.section__header {
+  font-size: 4rem;
+  line-height: 1.3;
+  font-weight: 500;
+}
+.section__part--btn {
+  display: flex;
+  justify-content: center;
+}
+
+th,
+td {
+  padding: 0.8rem;
+  font-size: 1.6rem;
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--color-primary);
+  font-size: 1.6rem;
+  font-family: inherit;
+  font-weight: 500;
+  border: none;
+  padding: 1.25rem 4.5rem;
+  border-radius: 10rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btnEdit,
+.btnDelete,
+.btnpres {
+  background-color: var(--color-primary-opacity);
+  padding: 1.1rem 3.5rem;
+}
+
+.btn:hover {
+  background-color: var(--color-primary-darker);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 9rem;
+  width: 100%;
+  padding: 0 6rem;
+  z-index: 100;
+}
+
+/* nav and stickly class at the same time */
+.nav.sticky {
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.nav__logo {
+  height: 4.5rem;
+  transition: all 0.3s;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.nav__item {
+  margin-left: 4rem;
+}
+
+.nav__link:link,
+.nav__link:visited {
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s;
+}
+
+.nav__link--btn:link,
+.nav__link--btn:visited {
+  padding: 0.8rem 2.5rem;
+  border-radius: 3rem;
+  background-color: var(--color-primary);
+  color: #222;
+}
+
+.nav__link--btn:hover,
+.nav__link--btn:active {
+  color: inherit;
+  background-color: var(--color-primary-darker);
+  color: #333;
+}
+
+.list {
+  max-width: 100rem;
+  margin: 0 auto 4rem auto;
+  padding-left: 8rem;
+  padding-right: 8rem;
+}
+.list .no--list {
+  display: flex;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+
+/* STUDENT && INSTRUCTORS*/
+.list__form {
+  display: flex;
+  justify-content: space-around;
+}
+.btnNewInstructor {
+  justify-self: center;
+}
+.instructor-form {
+  max-width: 60rem;
+}
+
+/* MODAL */
+/* MODAL WINDOW */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 60rem;
+  background-color: #f3f3f3;
+  padding: 5rem 6rem;
+  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: all 0.5s;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  transition: all 0.5s;
+}
+
+.modal__header {
+  font-size: 3.25rem;
+  margin-bottom: 4.5rem;
+  line-height: 1.5;
+}
+
+.modal__form {
+  margin: 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.modal__form label {
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.modal__form input,
+.modal__form select {
+  font-size: 1.6rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.modal__form button {
+  grid-column: 1 / span 2;
+  justify-self: center;
+  margin-top: 1rem;
+}
+
+.btn--close-modal {
+  font-family: inherit;
+  color: inherit;
+  position: absolute;
+  top: 0.5rem;
+  right: 2rem;
+  font-size: 4rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.coursesSelected.modal {
+  max-width: 1200rem;
+  max-height: 50rem;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  background-color: #f3f3f3;
+  padding: 5rem 6rem;
+  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: all 0.5s;
+}
+
+.section__container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.section-form {
+  max-width: 60rem;
+  background-color: #f3f3f3;
+  padding: 5rem 6rem;
+  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.05);
+  transition: all 0.5s;
+}
+
+.section-form h2 {
+  font-size: 3rem;
+}
+
+.section-form label {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.modal__form input,
+.modal__form select {
+  font-size: 1.4rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+.all_lists {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10rem;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+.all_btns {
+  max-width: 80rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.all_btns_container {
+  display: flex;
+  justify-content: center;
+}
+
+.all_header {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.coursePres__form label {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-right: 2rem;
+}
+
+.coursePres__form input {
+  font-size: 1.6rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}
+
+.coursePres-form {
+  margin-top: 3rem;
+  padding: 5rem 6rem;
+  box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.05);
+  transition: all 1s;
+}
+.studentAddCoursesBtns {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 4rem;
+  margin-top: 3rem;
+  gap: 3rem;
+}
+
+.flex-tocenter {
+  display: flex;
+  justify-content: center;
+}
+.btnNewCoursePres {
+  margin-top: 4rem;
+}
+
+@media (max-width: 80em) {
+  html {
+    /* 9px / 16px = 56.25%*/
+    font-size: 56.25%;
+  }
+}
+@media (max-width: 30em) {
+  html {
+    /* 9px / 16px = 56.25%*/
+    font-size: 40.25%;
+  }
+}
