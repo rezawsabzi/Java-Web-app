@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-@WebServlet(name = "SetGradeServlet", urlPatterns = {"/course/grade"})
+@WebServlet(name = "SetGradeServlet", urlPatterns = {"/manage/course/grade"})
 public class SetGradeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

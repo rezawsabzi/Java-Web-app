@@ -34,5 +34,8 @@
         <param-name>db_con_str</param-name>
         <param-value>jdbc:mysql://127.0.0.1:3306/contactdb?characterEncoding=utf-8&amp;useUnicode=true</param-value>
     </context-param>
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
 
 </web-app>

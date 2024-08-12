@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name = "StudentServlet", urlPatterns = {"/student"})
+@WebServlet(name = "StudentServlet", urlPatterns = {"/manage/student"})
 public class StudentServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -65,7 +65,7 @@ const AJAXMet = async function (url, method) {
 
 // MODEL FUNCTIONS --------------------------------
 const loadInstructorListHTML = async function () {
-  const result = await AJAX("/IE-Uni/instructor");
+  const result = await AJAX("/IE-Uni/manage/instructor");
   result.instructors.map((e) =>
     insArr.push(Object.assign(new Instrauctor(), e))
   );
@@ -73,13 +73,13 @@ const loadInstructorListHTML = async function () {
 };
 
 async function loadCoursesListHTML() {
-  const result = await AJAX("/IE-Uni/course");
+  const result = await AJAX("/IE-Uni/manage/course");
   result.courses.map((e) => courseArr.push(Object.assign(new Course(), e)));
   createCourseList();
 }
 
 async function loadCoursePresListHTML() {
-  const result = await AJAX("/IE-Uni/coursepres");
+  const result = await AJAX("/IE-Uni/manage/coursepres");
   if (result.status === "success") {
     result.coursesPreses.map((e) => {
       const course = new Course(
@@ -105,7 +105,7 @@ async function loadCoursePresListHTML() {
 }
 
 async function loadStudentsListHTML() {
-  const result = await AJAX("/IE-Uni/getstudents");
+  const result = await AJAX("/IE-Uni/manage/getstudents");
   result.students.map((e) => {
     let course, instructor, cp;
     // Map the selectedCourses array to instances of CoursePresentation
@@ -291,7 +291,7 @@ async function saveStudent() {
     if (isNaN(oldStuCode)) {
       let stu = new Student(stCode, firstName, lastName, gender);
       const result = await AJAXMet(
-        `/IE-Uni/student?action=save&stCode=${stu.stCode}&firstName=${stu.firstName}&lastName=${stu.lastName}&gender=${stu.gender}`,
+        `/IE-Uni/manage/student?action=save&stCode=${stu.stCode}&firstName=${stu.firstName}&lastName=${stu.lastName}&gender=${stu.gender}`,
         "PUT"
       );
       if (result.status === "success") {
@@ -304,7 +304,7 @@ async function saveStudent() {
       const idx = getIndexStudent(oldStuCode);
       if (idx > -1) {
         const result = await AJAXMet(
-          `/IE-Uni/student?action=update&stCode=${stCode}&firstName=${firstName}&lastName=${lastName}&gender=${gender}&oldId=${oldStuCode}`,
+          `/IE-Uni/manage/student?action=update&stCode=${stCode}&firstName=${firstName}&lastName=${lastName}&gender=${gender}&oldId=${oldStuCode}`,
           "PUT"
         );
         if (result.status === "success") {
@@ -386,7 +386,7 @@ function prepareEditStudent(stuCode) {
 }
 
 async function deleteStudent(stuCode) {
-  const result = await AJAXMet(`/IE-Uni/student?id=${stuCode}`, "delete");
+  const result = await AJAXMet(`/IE-Uni/manage/student?id=${stuCode}`, "delete");
   if (result.status === "success") {
     const stuIdx = getIndexStudent(stuCode);
     if (stuIdx > -1) {
@@ -522,7 +522,7 @@ async function saveInstructor() {
     if (isNaN(oldInsCode)) {
       let ins = new Instrauctor(insCode, firstName, lastName, gender);
       const result = await AJAXMet(
-        `/IE-Uni/instructor?action=save&insCode=${ins.insCode}&firstName=${ins.firstName}&lastName=${ins.lastName}&gender=${gender}`,
+        `/IE-Uni/manage/instructor?action=save&insCode=${ins.insCode}&firstName=${ins.firstName}&lastName=${ins.lastName}&gender=${gender}`,
         "PUT"
       );
       if (result.status === "success") {
@@ -535,7 +535,7 @@ async function saveInstructor() {
       const idx = getIndexInstructor(oldInsCode);
       if (idx > -1) {
         const result = await AJAXMet(
-          `/IE-Uni/instructor?action=update&insCode=${insCode}&firstName=${firstName}&lastName=${lastName}&gender=${gender}&oldId=${oldInsCode}`,
+          `/IE-Uni/manage/instructor?action=update&insCode=${insCode}&firstName=${firstName}&lastName=${lastName}&gender=${gender}&oldId=${oldInsCode}`,
           "PUT"
         );
         console.log(result);
@@ -622,7 +622,7 @@ function prepareEditInstructor(insCode) {
 }
 
 async function deleteInstructor(insCode) {
-  const result = await AJAXMet(`/IE-Uni/instructor?id=${insCode}`, "delete");
+  const result = await AJAXMet(`/IE-Uni/manage/instructor?id=${insCode}`, "delete");
   if (result.status === "success") {
     const insIdx = getIndexInstructor(insCode);
     if (insIdx > -1) {
@@ -745,7 +745,7 @@ async function saveCourse() {
     if (isNaN(oldCourseCode)) {
       let c = new Course(courseId, title, unitNumber);
       const result = await AJAXMet(
-        `/IE-Uni/course?action=save&courseId=${c.courseId}&title=${c.title}&unitNumbers=${c.unitNumber}`,
+        `/IE-Uni/manage/course?action=save&courseId=${c.courseId}&title=${c.title}&unitNumbers=${c.unitNumber}`,
         "PUT"
       );
       if (result.status === "success") {
@@ -759,7 +759,7 @@ async function saveCourse() {
 
       if (idx > -1) {
         const result = await AJAXMet(
-          `/IE-Uni/course?action=update&courseId=${courseId}&title=${title}&unitNumbers=${unitNumber}&oldId=${oldCourseCode}`,
+          `/IE-Uni/manage/course?action=update&courseId=${courseId}&title=${title}&unitNumbers=${unitNumber}&oldId=${oldCourseCode}`,
           "PUT"
         );
         console.log(result);
@@ -845,7 +845,7 @@ function prepareEditCourse(courseId) {
 }
 
 async function deleteCourse(courseId) {
-  const result = await AJAXMet(`/IE-Uni/course?id=${courseId}`, "delete");
+  const result = await AJAXMet(`/IE-Uni/manage/course?id=${courseId}`, "delete");
   if (result.status === "success") {
     const coIdx = getIndexCourse(courseId);
     if (coIdx > -1) {
@@ -1103,7 +1103,7 @@ async function saveGrades(corsePresId) {
         if (inputs[i].value >= 0 && inputs[i].value <= 20) {
           const course = courseSelArr[j];
           const result = await AJAX(
-            `/IE-Uni/course/grade?grade=${inputs[i].value}&courseSelId=${course.courseSelId}`
+            `/IE-Uni/manage/course/grade?grade=${inputs[i].value}&courseSelId=${course.courseSelId}`
           );
           if (result.status === "success") {
             courseSelArr[j].setGrade(inputs[i].value);
@@ -1168,7 +1168,7 @@ async function saveCoursePres() {
         insArr[getIndexInstructor(instructorId)]
       );
       const result = await AJAXMet(
-        `/IE-Uni/coursepres?action=save&courseId=${c.course.courseId}&coursePresId=${c.coursePresId}&insCode=${c.instructor.insCode}`,
+        `/IE-Uni/manage/coursepres?action=save&courseId=${c.course.courseId}&coursePresId=${c.coursePresId}&insCode=${c.instructor.insCode}`,
         "PUT"
       );
       if (result.status === "success") {
@@ -1182,7 +1182,7 @@ async function saveCoursePres() {
       const idx = getIndexCoursePres(oldCoursePresCode);
       if (idx > -1) {
         const result = await AJAXMet(
-          `/IE-Uni/coursepres?action=update&courseId=${courseId}&coursePresId=${coursePresId}&insCode=${instructorId}&oldId=${oldCoursePresCode}`,
+          `/IE-Uni/manage/coursepres?action=update&courseId=${courseId}&coursePresId=${coursePresId}&insCode=${instructorId}&oldId=${oldCoursePresCode}`,
           "PUT"
         );
         if (result.status === "success") {
@@ -1255,7 +1255,7 @@ function getIndexCoursePres(coursePresId) {
 
 async function deleteCoursePres(coursePresId) {
   const result = await AJAXMet(
-    `/IE-Uni/coursepres?id=${coursePresId}`,
+    `/IE-Uni/manage/coursepres?id=${coursePresId}`,
     "delete"
   );
   if (result.status === "success") {
@@ -1431,7 +1431,7 @@ async function saveSelectedCourses() {
         coursePresArr[getIndexCoursePres(coursePresCode)]
       );
       const result = await AJAXMet(
-        `/IE-Uni/course/select?stCode=${st.stCode}&cCode=${coursePresCode}&action=save`,
+        `/IE-Uni/manage/course/select?stCode=${st.stCode}&cCode=${coursePresCode}&action=save`,
         "PUT"
       );
       if (result.status === "success") {
@@ -1459,7 +1459,7 @@ async function deleteCourseSelected(coursePresId, stCode) {
   const stIdx = getIndexStudent(stCode);
   if (stIdx > -1) {
     const result = await AJAXMet(
-      `/IE-Uni/course/select?stCode=${stCode}&cCode=${coursePresId}`,
+      `/IE-Uni/manage/course/select?stCode=${stCode}&cCode=${coursePresId}`,
       "delete"
     );
     if (result.status === "success") {

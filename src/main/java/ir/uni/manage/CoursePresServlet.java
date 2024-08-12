@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "CoursesPresServlet", urlPatterns = {"/coursepres"})
+@WebServlet(name = "CoursesPresServlet", urlPatterns = {"/manage/coursepres"})
 public class CoursePresServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

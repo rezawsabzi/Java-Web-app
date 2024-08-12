@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Reza Sabzi
  */
-@WebServlet(name = "GetAllStudents", urlPatterns = {"/getstudents"})
+@WebServlet(name = "GetAllStudents", urlPatterns = {"/manage/getstudents"})
 public class GetAllStudents extends HttpServlet {
 
   
